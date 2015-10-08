@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml;
 using System.IO;
+using System.Linq;
 using System.Diagnostics;
 
 // Note that the following namespace uses NodeXL's former company name,
@@ -11,7 +12,7 @@ using System.Diagnostics;
 using Microsoft.NodeXL.ExcelTemplatePlugIns;
 
 
-namespace jakedavies.JakeDataProviderNodeXL
+namespace jakedavies.JakeDataProviders
 {
     //*****************************************************************************
     //  Class: SampleGraphDataProvider
@@ -185,37 +186,68 @@ namespace jakedavies.JakeDataProviderNodeXL
 
             // Add some vertices.
 
-            XmlNode oVertexXmlNode = AppendVertexXmlNode(oGraphXmlNode, "V1");
-            AppendGraphMLAttributeValue(oVertexXmlNode, VertexColorID, "red");
-            AppendGraphMLAttributeValue(oVertexXmlNode, VertexLatestPostDateID,
-                "2009/07/05");
+            int maxNodes = 50;
+            int m = 3;
+            int nodesPerCluster = 50;
+            double edgeChance = 1 / 50;
+            int[] cluseteredNodes = new int[maxNodes];
 
-            oVertexXmlNode = AppendVertexXmlNode(oGraphXmlNode, "V2");
-            AppendGraphMLAttributeValue(oVertexXmlNode, VertexColorID, "orange");
-            AppendGraphMLAttributeValue(oVertexXmlNode, VertexLatestPostDateID,
-                "2009/07/12");
 
-            oVertexXmlNode = AppendVertexXmlNode(oGraphXmlNode, "V3");
-            AppendGraphMLAttributeValue(oVertexXmlNode, VertexColorID, "blue");
+            int numClusters = maxNodes / nodesPerCluster;
+            // do the other clusters
+            for (int k = 0; k < numClusters; k++)
+            {
+                AppendVertexXmlNode(oGraphXmlNode, indexToVertexName(0));
+                AppendVertexXmlNode(oGraphXmlNode, indexToVertexName(1));
+                AppendVertexXmlNode(oGraphXmlNode, indexToVertexName(2));
 
-            oVertexXmlNode = AppendVertexXmlNode(oGraphXmlNode, "V4");
-            AppendGraphMLAttributeValue(oVertexXmlNode, VertexColorID, "128,0,128");
+                for (int i = 3; i < 50; i++)
+                {
+                    int pointer = 0;
+                    int[] nodes = new int[m];
+                    nodes = initializeNodes(nodes);
+                    Random rnd = new Random();
+                    string node1Name = indexToVertexName(i);
+                    AppendVertexXmlNode(oGraphXmlNode, node1Name);
 
-            oVertexXmlNode = AppendVertexXmlNode(oGraphXmlNode, "V5");
+
+                    while (nodes[m - 1] == -1)
+                    {
+
+                        int nodeToConnectTo = rnd.Next(0, i);
+                        //check if that node has already been added
+                        if (Array.IndexOf(nodes, nodeToConnectTo) == -1)
+                        {
+                            nodes[pointer] = nodeToConnectTo;
+                            AppendEdgeXmlNode(oGraphXmlNode, node1Name, indexToVertexName(nodeToConnectTo));
+                            pointer++;
+                        }
+
+                    }
+
+                }
+            }
+        
 
             // Connect some of the vertices with edges.
 
-            XmlNode oEdgeXmlNode;
-
-            oEdgeXmlNode = AppendEdgeXmlNode(oGraphXmlNode, "V1", "V2");
-
-            oEdgeXmlNode = AppendEdgeXmlNode(oGraphXmlNode, "V3", "V2");
-            AppendGraphMLAttributeValue(oEdgeXmlNode, EdgeWidthID, "2.5");
 
             pathToTemporaryFile = Path.GetTempFileName();
             oXmlDocument.Save(pathToTemporaryFile);
 
             return (true);
+        }
+        public string indexToVertexName(int index)
+        {
+            return "Vertex " + index;
+        }
+        public int[] initializeNodes(int[] nodes)
+        {
+            for(int i =0; i< nodes.Length; i++)
+            {
+                nodes[i] = -1;
+            }
+            return nodes;
         }
 
         //*************************************************************************
