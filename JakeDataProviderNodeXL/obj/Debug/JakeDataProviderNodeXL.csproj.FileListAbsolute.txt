@@ -1,0 +1,6 @@
+c:\users\40651127\documents\visual studio 2015\Projects\JakeDataProviderNodeXL2\JakeDataProviderNodeXL\bin\Debug\JakeDataProviderNodeXL.dll
+c:\users\40651127\documents\visual studio 2015\Projects\JakeDataProviderNodeXL2\JakeDataProviderNodeXL\bin\Debug\JakeDataProviderNodeXL.pdb
+c:\users\40651127\documents\visual studio 2015\Projects\JakeDataProviderNodeXL2\JakeDataProviderNodeXL\bin\Debug\Microsoft.NodeXL.ExcelTemplatePlugIns.dll
+c:\users\40651127\documents\visual studio 2015\Projects\JakeDataProviderNodeXL2\JakeDataProviderNodeXL\obj\Debug\JakeDataProviderNodeXL.csprojResolveAssemblyReference.cache
+c:\users\40651127\documents\visual studio 2015\Projects\JakeDataProviderNodeXL2\JakeDataProviderNodeXL\obj\Debug\JakeDataProviderNodeXL.dll
+c:\users\40651127\documents\visual studio 2015\Projects\JakeDataProviderNodeXL2\JakeDataProviderNodeXL\obj\Debug\JakeDataProviderNodeXL.pdb
